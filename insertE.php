@@ -1,7 +1,7 @@
 <html>
 <body>
 <?php
-	require('connect.php')
+	require('connect.php');
 	$syear = $_GET['startyr'];
 	//echo"START YEAR:";
 	//echo $syear;

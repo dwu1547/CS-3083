@@ -38,7 +38,7 @@
 			$error = 'Username taken.';		
 		
 		# Insert into db
-		if(!isset($error) || empty($error)) {
+		if(!isset($error) && empty($error)) {
 			$insUser = "INSERT INTO member (username, password, firstname, lastname, zipcode) 
 				VALUES ('$usern', '$passw', '$fname', '$lname', '$zipco')";
 			if(mysqli_query($conn, $insUser)) {

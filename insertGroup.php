@@ -1,12 +1,14 @@
 <?php
 	require('connect.php');
 	session_start();
-	
+
 	if(isset($_POST['submit'])) {
-		$usern = $_POST['username'];
-		$passw = $_POST['password'];
-		$fields = array('username', 'password');
-		
+		$id = $_POST['gID'];
+		$name = $_POST['gName'];
+		$desc = $_POST['desc'];
+
+		$fields = array('gID', 'gName', 'desc');
+
 		# Check field errors
 		foreach($fields AS $index) {
 			if(!isset($_POST[$index]) || empty($_POST[$index])) {
@@ -14,24 +16,26 @@
 				break;
 			}
 		}
-		
-		# Check password matching
-		$selUser = "SELECT * FROM member WHERE username = '$usern'";
-		$result = mysqli_query($conn, $selUser);
-		if($result && mysqli_num_rows($result) === 1) {			
-			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);			
-			if(password_verify($passw, $row['password'])) {
-				$_SESSION['user'] = $usern;
-				header("Location: meetindex.php");
+
+		# Check if group ID exists
+		$selID = "SELECT * FROM groups WHERE group_id = '$id'";
+		$qry = mysqli_query($conn, $selID);
+		if($qry && mysqli_num_rows($qry) > 0)
+			$error = 'Group ID taken.';
+
+		# Insert into database
+		if(!isset($error) && empty($error)) {
+			$insGroup = "INSERT INTO groups (group_id, group_name, description, username)
+				VALUES ('$id', '$name', '$desc', '".$_SESSION['user']."')";
+			if(mysqli_query($conn, $insGroup)) {
+				echo "<h2> Successfully added new group.";
+				echo "<a href='meetindex.php'> Click here to go back </a> </h2>";
 			}
-			else {
-				$error = 'Invalid login or password';
-			}
+			else
+				echo 'ERROR: '.mysqli_error($conn);
 		}
-		else {
-			$error = 'Invalid login or password';
-		}		
 	}
+	
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +52,7 @@
 		<?php 
 			if(isset($error)) {
 				echo 'ERROR: '.$error.'<br>';
-				echo "<a href='login.html'> Click here to go back </a>";
+				echo "<a href='makegroup.php'> Click here to go back </a>";
 			}
 		?> 
 	</div>
