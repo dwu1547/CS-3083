@@ -7,18 +7,6 @@
 		echo "User is not signed in";
 		header("refresh:2; url=main.html");
 	}
-
-	if(isset($_POST['submit'])) {
-		# Check for field errors
-
-
-		# Check if user is authorized to make new event
-		$selAuthority = "SELECT * FROM belongs_to WHERE username = '".$_SESSION['user']."' AND authorized = 1";
-		$qry = mysqli_query($conn, $selAuthority);
-		if($qry && mysqli_num_of_rows($qry) > 0) {
-			# Insert new event
-		}
-	}
 ?>
 
 <!DOCTYPE html>
@@ -67,13 +55,63 @@
   </script>
 </head>
 <body>
- 	<form method="POST" action="eventProcess.php">
-		<label for="from">From</label>
-		<input type="text" id="from" name="from">
-		<label for="to">to</label>
-		<input type="text" id="to" name="to">
-		<input type="submit" name="submit">
-	 </form>
+	<div class="container-fluid">
+		<form class="makeNewEvent" method="POST" action="eventProcess.php">
+			<h2> Create your event </h2>			
+			<div class="_eID">
+				<label for="eID"> Event ID: </label>
+				<input type="number" name="eID" id="eID" max="99999999999999999999" min="1">
+			</div>
+			<div class="_eTitle">
+				<label for="eTitle"> Event Title: </label>
+				<input type="text" name="eTitle" id="eTitle" maxlength="100">
+			</div>
+			<div class="_desc">
+				<label for="desc"> Description: </label>
+				<textarea name="desc" id="desc" rows="10" cols="40"></textarea>
+			</div>
+			<div class="_dates">
+			<h4> Select date time </h4>
+				<label for="from"> From </label>
+				<input type="text" id="from" name="from">
+				<label for="to"> to </label>
+				<input type="text" id="to" name="to">
+			</div>
+			<div class="_gID">
+				<?php
+					$selgID = "SELECT group_id FROM groups where username = '".$_SESSION['user']."'";
+					$qry = mysqli_query($conn, $selgID);
+					if($qry && mysqli_num_rows($qry) > 0) {
+						echo "<label for='gID'> Group ID: &nbsp</label>";
+						echo "<select name='selgroupID'>";
+						while($row = mysqli_fetch_assoc($qry)) {
+							#echo $row["group_id"].' ';
+							echo "<option value=".$row["group_id"]."> ".$row["group_id"]." </option>";
+						}
+						echo "</select>";
+					}
+				?>
+			</div>
+			<div class="_locaName">
+				<?php
+					$selLoc = "SELECT lname, zip FROM location";
+					$result = mysqli_query($conn, $selLoc);
+					if($result && mysqli_num_rows($result) > 0) {
+						echo "<label for='lname'> Location: &nbsp</label>";
+						echo "<select name='selLoc'>";
+						while($row = mysqli_fetch_assoc($result)) {
+							echo "<option value='".$row["lname"]."|".$row["zip"]."'> ".$row["lname"]." and ".$row["zip"]."</option>";
+						}
+						echo "</select>";
+					}
+				?>
+			</div>
+			<div>
+				<input type="submit" name="submit" value="Make New Event">
+				<input type="button" value="Go Back" class="button_active" onclick="location.href='meetindex.php';">
+			</div>
+		 </form>
+	</div>
  
 </body>
 </html>

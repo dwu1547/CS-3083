@@ -35,7 +35,7 @@
 			<h2> Create a new group </h2>
 			<div class="_gID">
 				<label for="gID"> Group ID: </label>
-				<input type="number" name="gID" id="gID" max="99999999999999999999">
+				<input type="number" name="gID" id="gID" min="1" max="99999999999999999999">
 			</div>
 			<div class="_gName">
 				<label for="gName"> Group Name: </label>
