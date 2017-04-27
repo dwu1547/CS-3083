@@ -1,7 +1,14 @@
 <?php
 	require('connect.php');
 	session_start();
+	# Check if user is signed in or not
+	if(!isset($_SESSION['user'])) {
+		echo "User is not signed in";
+		header("refresh:2; url=main.html");
+	}
+	
 	echo "<span> Current signed in as ".$_SESSION['user']." </span>";
+
 ?>
 
 <!DOCTYPE html>

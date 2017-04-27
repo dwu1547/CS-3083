@@ -2,10 +2,16 @@
 	require('connect.php');
 	session_start();
 
+	# Check if user is signed in or not
+	if(!isset($_SESSION['user'])) {
+		echo "User is not signed in";
+		header("refresh:2; url=main.html");
+	}
+
 	if(isset($_POST['submit'])) {
-		$id = $_POST['gID'];
-		$name = $_POST['gName'];
-		$desc = $_POST['desc'];
+		$id = htmlspecialchars(strip_tags(trim($_POST['gID'])));
+		$name = htmlspecialchars(strip_tags(trim($_POST['gName'])));
+		$desc = htmlspecialchars(strip_tags(trim($_POST['desc'])));
 
 		$fields = array('gID', 'gName', 'desc');
 
@@ -25,6 +31,8 @@
 
 		# Insert into database
 		if(!isset($error) && empty($error)) {
+			$_SESSION['creator'] = $_SESSION['user'];	# variable for creator of group
+
 			$insGroup = "INSERT INTO groups (group_id, group_name, description, username)
 				VALUES ('$id', '$name', '$desc', '".$_SESSION['user']."')";
 			if(mysqli_query($conn, $insGroup)) {

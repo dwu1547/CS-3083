@@ -1,6 +1,12 @@
 <?php
 	session_start();
 	require('connect.php');
+	
+	# Check if user is signed in or not
+	if(!isset($_SESSION['user'])) {
+		echo "User is not signed in";
+		header("refresh:2; url=main.html");
+	}
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +24,7 @@
 		<h1> Welcome to MeetUp - Start Your Groups Now </h1>
 		<span> Current signed in as <?php echo $_SESSION['user'] ?> </span>
 	</div>
-	<h3> <a href="sortEvents2.html"> Click here to look through your events </a></h3>
+	<h3> <a href="sortEvents2.php"> Click here to look through your events </a></h3>
 	<h3> <a href="makegroup.php"> Want to make a new group? Click here. </a></h3>
 
 	<form action="logout.php">

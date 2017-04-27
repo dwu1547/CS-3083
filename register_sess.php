@@ -3,13 +3,13 @@
 	session_start();
 	
 	if(isset($_POST['submit'])) {
-		$fname = $_POST['fname'];
-		$lname = $_POST['lname'];
-		$email = $_POST['email'];
-		$usern = $_POST['username'];
-		$zipco = $_POST['zipcode'];
-		$passw = password_hash($_POST['password'], PASSWORD_DEFAULT); #bcrypt
-		$valid = $_POST['pass_valid'];
+		$fname = ucfirst(htmlspecialchars(strip_tags(trim($_POST['fname']))));
+		$lname = ucfirst(htmlspecialchars(strip_tags(trim($_POST['lname']))));
+		$email = htmlspecialchars(strip_tags(trim($_POST['email'])));
+		$usern = htmlspecialchars(strip_tags(trim($_POST['username'])));
+		$zipco = htmlspecialchars(strip_tags(trim($_POST['zipcode'])));
+		$passw = password_hash(htmlspecialchars(strip_tags(trim($_POST['password']))), PASSWORD_DEFAULT); #bcrypt
+		$valid = htmlspecialchars(strip_tags(trim($_POST['pass_valid'])));
 		#var_dump($passw);
 		# Check field errors
 		$fields = array('fname', 'lname', 'email', 'username', 'password', 'pass_valid', 'zipcode');

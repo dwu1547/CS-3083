@@ -3,6 +3,8 @@
 	if($_SESSION['user']) {
 		echo "You have logged out";
 		session_unset();
-		header("Location: main.html");
+		header("refresh:2; url=main.html");
 	}
+	else
+		header("refresh:2; url=main.html");
 ?>

@@ -2,6 +2,12 @@
 <body>
 <?php
 	require('connect.php');
+	# Check if user is signed in or not
+	if(!isset($_SESSION['user'])) {
+		echo "User is not signed in";
+		header("refresh:2; url=main.html");
+	}
+	
 	$syear = $_GET['startyr'];
 	//echo"START YEAR:";
 	//echo $syear;

@@ -3,8 +3,8 @@
 	session_start();
 	
 	if(isset($_POST['submit'])) {
-		$usern = $_POST['username'];
-		$passw = $_POST['password'];
+		$usern = htmlspecialchars(strip_tags(trim($_POST['username'])));
+		$passw = htmlspecialchars(strip_tags(trim($_POST['password'])));
 		$fields = array('username', 'password');
 		
 		# Check field errors
