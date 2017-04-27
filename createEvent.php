@@ -7,6 +7,8 @@
 		echo "User is not signed in";
 		header("refresh:2; url=main.html");
 	}
+
+	echo "<span> Current signed in as ".$_SESSION['user']." </span>";
 ?>
 
 <!DOCTYPE html>
@@ -16,10 +18,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <link type="text/css" rel="stylesheet" href="main.css">  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
+  <link type="text/css" rel="stylesheet" href="main.css">  
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <!-- timepicker -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+  <!-- Updated stylesheet url -->
+  <link rel="stylesheet" href="//jonthornton.github.io/jquery-timepicker/jquery.timepicker.css">
+  <!-- Updated JavaScript url -->
+  <script src="//jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+  <!-- datepicker -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
   <script>
   $( function() {
     var dateFormat = "mm/dd/yy",
@@ -27,7 +38,7 @@
         .datepicker({
           defaultDate: "+1w",
           changeMonth: true,
-          numberOfMonths: 3
+          numberOfMonths: 1
         })
         .on( "change", function() {
           to.datepicker( "option", "minDate", getDate( this ) );
@@ -35,7 +46,7 @@
       to = $( "#to" ).datepicker({
         defaultDate: "+1w",
         changeMonth: true,
-        numberOfMonths: 3
+        numberOfMonths: 1
       })
       .on( "change", function() {
         from.datepicker( "option", "maxDate", getDate( this ) );
@@ -48,7 +59,6 @@
       } catch( error ) {
         date = null;
       }
- 
       return date;
     }
   } );
@@ -71,11 +81,24 @@
 				<textarea name="desc" id="desc" rows="10" cols="40"></textarea>
 			</div>
 			<div class="_dates">
-			<h4> Select date time </h4>
+			<h4> Select dates </h4>
 				<label for="from"> From </label>
 				<input type="text" id="from" name="from">
 				<label for="to"> to </label>
 				<input type="text" id="to" name="to">
+			</div>
+			<div class="_time">
+				<label for="startTime"> Start time: </label>
+				<input type="text" name="startTime" class="startTime"/>
+				<label for="endTime"> End time: </label>
+				<input type="text" name="endTime" class="endTime"/>
+
+	            <script>
+	                $(function() {
+	                    $('.startTime').timepicker();
+	                    $('.endTime').timepicker();
+	                });
+	            </script>
 			</div>
 			<div class="_gID">
 				<?php

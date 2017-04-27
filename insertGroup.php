@@ -35,6 +35,9 @@
 
 			$insGroup = "INSERT INTO groups (group_id, group_name, description, username)
 				VALUES ('$id', '$name', '$desc', '".$_SESSION['user']."')";
+
+			$insBelongsTo = "INSERT INTO belongs_to (group_id, username, authorized)
+				VALUES ('$id', '".$_SESSION['user']."', 1)";
 			if(mysqli_query($conn, $insGroup)) {
 				echo "<h2> Successfully added new group.";
 				echo "<a href='meetindex.php'> Click here to go back </a> </h2>";
