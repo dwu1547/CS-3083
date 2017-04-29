@@ -38,9 +38,12 @@
 
 			$insBelongsTo = "INSERT INTO belongs_to (group_id, username, authorized)
 				VALUES ('$id', '".$_SESSION['user']."', 1)";
+
 			if(mysqli_query($conn, $insGroup)) {
-				echo "<h2> Successfully added new group.";
-				echo "<a href='meetindex.php'> Click here to go back </a> </h2>";
+				if(mysqli_query($conn, $insBelongsTo)) {
+					echo "<h2> Successfully added new group.";
+					echo "<a href='meetindex.php'> Click here to go back </a> </h2>";
+				}
 			}
 			else
 				echo 'ERROR: '.mysqli_error($conn);

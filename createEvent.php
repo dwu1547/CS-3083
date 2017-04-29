@@ -113,6 +113,10 @@
 						}
 						echo "</select>";
 					}
+					else {
+						echo "<script> alert('You are not in a group! Please join or create a group.') </script>";
+						header("refresh: 0.1; url=makegroup.php"); 
+					}
 				?>
 			</div>
 			<div class="_locaName">
@@ -126,6 +130,10 @@
 							echo "<option value='".$row["lname"]."|".$row["zip"]."'> ".$row["lname"]." and ".$row["zip"]."</option>";
 						}
 						echo "</select>";
+					}
+					else {
+						echo "<script> alert('Locations not added yet. Please add locations.') </script>";
+						header("refresh: 0.1; url=meetindex.php"); # placeholder for addlocation.php
 					}
 				?>
 			</div>

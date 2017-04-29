@@ -1,5 +1,7 @@
 <?php
 	require('connect.php');
+	session_unset();
+	session_destroy();
 	session_start();
 	
 	if(isset($_POST['submit'])) {

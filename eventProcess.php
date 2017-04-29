@@ -19,14 +19,15 @@
 		$selgroupID = $_POST['selgroupID'];
 		$selLocName = $_POST['selLoc'];		# white space issue 
 
+		// echo "event id: ".$eID;
+		// echo "eTitle: ".$eTitle;
+		// echo "desc: ".$desc;
 		// echo $startDate.' '.$endDate;
-		// echo "group ID: ".$selgroupID;
-		// echo "location name: ".$selLocName;
 		// echo "start time: ".$startTime.' '."endTime: ".$endTime;
 		// echo "24 hr format starttime: ".date("G:i", strtotime($startTime))."endtime: ".date("G:i", strtotime($endTime)).". ";
-
-		# Check for same event ID
-
+		// echo "group ID: ".$selgroupID;
+		// echo "location name: ".$selLocName;
+		
 		# Check for field errors
 		$fields = array('eID', 'eTitle', 'desc', 'from', 'to', 'startDate', 'endDate', 'startTime', 'endTime', 'selgroupID', 'selLoc');
 
@@ -37,12 +38,23 @@
 			}
 		}
 
+		# Check for same event ID
+		$selID = "SELECT * FROM events WHERE event_id = '$eID'";
+		$qry = mysqli_query($conn, $selID);
+		if($qry && mysqli_num_rows($qry) > 0)
+			$error = 'Event ID taken.';
+
 		# Check if user is authorized to make new event
-		/* $selAuthority = "SELECT * FROM belongs_to WHERE username = '".$_SESSION['user']."' AND authorized = 1";
+		$selAuthority = "SELECT * FROM belongs_to WHERE username = '".$_SESSION['user']."' AND group_id = '$selgroupID' AND authorized = 1";
 		$qry = mysqli_query($conn, $selAuthority);
-		if($qry && mysqli_num_of_rows($qry) > 0) {
-			# Insert new event
-		} */
+		if($qry && mysqli_num_rows($qry) > 0) {
+			#echo "user is authorized";
+			return;
+		}
+		else {
+			echo "User is NOT authorized to create new event.";
+			header("refresh: 1; url=meetindex.html");
+		}
 	}
 ?>
 
