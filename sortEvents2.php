@@ -8,7 +8,7 @@
 		header("refresh:2; url=main.html");
 	}
 	
-	echo "<span> Current signed in as ".$_SESSION['user']." </span>";
+	echo "<span style='font-size: 18px;'> Current signed in as ".$_SESSION['user']." </span>";
 ?>
 
 <!DOCTYPE html>

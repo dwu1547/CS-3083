@@ -1,8 +1,14 @@
 <?php
 	require('connect.php');
-	session_unset();
-	session_destroy();
-	session_start();
+	
+	# Check if session existed ? reset : start
+	if (session_status() != PHP_SESSION_NONE) {		
+		session_unset();
+		session_destroy();
+	}
+	else {
+		session_start();
+	}
 	
 	if(isset($_POST['submit'])) {
 		$usern = htmlspecialchars(strip_tags(trim($_POST['username'])));
@@ -50,7 +56,7 @@
 		<?php 
 			if(isset($error)) {
 				echo 'ERROR: '.$error.'<br>';
-				echo "<a href='login.html'> Click here to go back </a>";
+				echo "<a href='login.php'> Click here to go back </a>";
 			}
 		?> 
 	</div>

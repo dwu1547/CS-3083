@@ -1,8 +1,14 @@
 <?php
 	require('connect.php');
-	session_unset();
-	session_destroy();
-	session_start();
+
+	# Check if session existed ? reset : start
+	if (session_status() != PHP_SESSION_NONE) {		
+		session_unset();
+		session_destroy();
+	}
+	else {
+		session_start();
+	}
 	
 	if(isset($_POST['submit'])) {
 		$fname = ucfirst(htmlspecialchars(strip_tags(trim($_POST['fname']))));
@@ -45,7 +51,7 @@
 				VALUES ('$usern', '$passw', '$fname', '$lname', '$zipco')";
 			if(mysqli_query($conn, $insUser)) {
 				echo "<h2> Successfully registered.";
-				echo "<a href='login.html'> Click here to go login </a> </h2>";
+				echo "<a href='login.php'> Click here to go login </a> </h2>";
 			}
 			else
 				echo 'ERROR: '.mysqli_error($conn);
@@ -68,7 +74,7 @@
 		<?php 
 			if(isset($error)) {
 				echo 'ERROR: '.$error.'<br>';
-				echo "<a href='registration.html'> Click here to go back </a>";
+				echo "<a href='registration.php'> Click here to go back </a>";
 			}
 		?> 
 	</div>
