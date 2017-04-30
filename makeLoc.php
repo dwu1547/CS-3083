@@ -125,7 +125,8 @@ input.din {
   <label for="Desc"> Description: </label>
   <textarea name="Desc" class="din" id="Descript" rows="10" cols="40"></textarea>
 		<br>
-	<input type="submit">
+	     <input type="submit">
+        <input type="button" value="Go Back" class="button_active" onclick="location.href='meetindex.php';">
 	<br>
 	</form>
   </body>

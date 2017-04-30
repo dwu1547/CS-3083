@@ -101,7 +101,8 @@ if($check == True){
 	}
 	$sql ="INSERT INTO Location VALUES($inLoc,$inZip,$inStreet,$inCity,$inDesc,$inLat,$inLong)";
 	if ($conn->query($sql) === TRUE) {
-		echo "New record created successfully";
+		echo "<h2> New record created successfully. ";
+		echo "<a href='meetindex.php'> Click here to go back </a> </h2>";
 	} else {
 		echo "Error: " . $sql . "<br>" . $conn->error;
 	}

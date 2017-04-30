@@ -29,7 +29,7 @@
 	<h3> <a href="sortEvents2.php"> Click here to look through your events </a></h3>
 	<h3> <a href="makegroup.php"> Want to make a new group? Click here. </a></h3>
 	<h3> <a href="makeEvent.php"> Want to create a new event? Click here. </a></h3>
-
+	<h3> <a href="makeLoc.php"> Want to create a new location? Click here. </a></h3>
 	<form action="logout.php">
 		<input type="submit" value="Logout">
 	</form>

@@ -133,7 +133,7 @@
 					}
 					else {
 						echo "<script> alert('Locations not added yet. Please add locations.') </script>";
-						header("refresh: 0.1; url=meetindex.php"); # placeholder for addlocation.php
+						header("refresh: 0.1; url=makeLoc.php"); # placeholder for addlocation.php
 					}
 				?>
 			</div>
