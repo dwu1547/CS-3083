@@ -4,6 +4,8 @@
 	# Check if user is signed in or not
 	if(!isset($_SESSION['user'])) {
 		echo "User is not signed in";
+		session_unset();
+    	session_destroy();
 		header("refresh:2; url=main.php");
 	}
 	
@@ -44,6 +46,10 @@
 			<div class="_desc">
 				<label for="desc"> Description: </label>
 				<textarea name="desc" id="desc" rows="10" cols="40"></textarea>
+			</div>
+			<div class="_interest">
+				<label for="interest"> Group Interest: </label>
+				<input type="text" name="gInterest" id="gInterest" maxlength="20">
 			</div>
 			<div> 
 				<input type="submit" name="submit" value="Make New Group">

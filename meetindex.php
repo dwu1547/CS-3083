@@ -5,6 +5,8 @@
 	# Check if user is signed in or not
 	if(!isset($_SESSION['user'])) {
 		echo "User is not signed in";
+		session_unset();
+    	session_destroy();
 		header("refresh:1; url=main.php");
 	}
 ?>
@@ -26,7 +28,7 @@
 	</div>
 	<h3> <a href="sortEvents2.php"> Click here to look through your events </a></h3>
 	<h3> <a href="makegroup.php"> Want to make a new group? Click here. </a></h3>
-	<h3> <a href="createEvent.php"> Want to create a new event? Click here. </a></h3>
+	<h3> <a href="makeEvent.php"> Want to create a new event? Click here. </a></h3>
 
 	<form action="logout.php">
 		<input type="submit" value="Logout">

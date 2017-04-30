@@ -5,7 +5,9 @@
 	# Check if user is logged in or not
 	if(!isset($_SESSION['user'])) {
 		echo "User is not signed in";
-		header("refresh:2; url=main.html");
+		session_unset();
+    	session_destroy();
+		header("refresh:2; url=main.php");
 	}
 	
 	echo "<span style='font-size: 18px;'> Current signed in as ".$_SESSION['user']." </span>";
@@ -33,7 +35,7 @@ select {
 	<p>Enter in the format "YYYY-MM-DD HH:MI:SS"</p>
 	<form action="insertE.php" method="get">
 	Start Time: 
-	<span>YYYY</span><input class="inn" id="startYear" type="text" name="startyr" value="0000" maxlength="4" onkeypress="return isNumberKey(event)">
+	<span>YYYY</span><input class="inn" id="startYear" type="text" name="startyr" placeholder="0000" maxlength="4" onkeypress="return isNumberKey(event)">
 	<span>MM</span>
 	<select name="startmth">
 		<option value="00" selected>00</option>
@@ -90,7 +92,7 @@ select {
 	<span>MI</span><input class="inn" id="startMinute" type="text" name="startmin">
 	<span>SS</span><input class="inn" id="startSecond" type="text" name="startsec"> -->
 	End Time:
-	<span>YYYY</span><input class="inn" id="endYear" type="text" name="endyr" value="0000" maxlength="4" onkeypress="return isNumberKey(event)">
+	<span>YYYY</span><input class="inn" id="endYear" type="text" name="endyr" placeholder="0000" maxlength="4" onkeypress="return isNumberKey(event)">
 	<select name="endmth">
 		<option value="00" selected>00</option>
 		<option value="01">1</option>

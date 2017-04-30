@@ -5,6 +5,8 @@
 	# Check if user is signed in or not
 	if(!isset($_SESSION['user'])) {
 		echo "User is not signed in";
+		session_unset();
+    	session_destroy();
 		header("refresh:2; url=main.php");
 	}
 
@@ -94,7 +96,7 @@
 		<?php 
 			if(isset($error)) {
 				echo 'ERROR: '.$error.'<br>';
-				echo "<a href='createEvent.php'> Click here to go back </a>";
+				echo "<a href='makeEvent.php'> Click here to go back </a>";
 			}
 		?> 
 	</div>
