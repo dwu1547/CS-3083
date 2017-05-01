@@ -30,5 +30,6 @@ echo "0 results";
 }
 $conn->close();
 ?>
+<input type="button" value="Go back to starting page" class="button_active" onclick="location.href='meetindex.php';">
 </body>
 </html>

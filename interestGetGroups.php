@@ -33,6 +33,6 @@
 	}
 	$conn->close();
 ?>
-	<input type="button" value="Go Back" class="button_active" onclick="location.href='meetindex.php';">
+<input type="button" value="Go Back" class="button_active" onclick="location.href='meetindex.php';">
 </body>
 </html>

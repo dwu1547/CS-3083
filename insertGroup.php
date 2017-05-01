@@ -46,16 +46,40 @@
 			$sql .= "INSERT INTO belongs_to (group_id, username, authorized)
 				VALUES ('$id', '".$_SESSION['user']."', 1);";
 
+			$sql .= "INSERT INTO interest (interest_name) 
+				VALUES ('$interest');";
+
 			$sql .= "INSERT INTO about (interest_name, group_id) 
+					SELECT interest_name, group_id FROM interest, groups WHERE interest_name = '$interest' AND group_id = '$id'";
+
+			$sql2 = "INSERT INTO groups (group_id, group_name, description, username)
+				VALUES ('$id', '$name', '$desc', '".$_SESSION['user']."');";
+
+			$sql2 .= "INSERT INTO belongs_to (group_id, username, authorized)
+				VALUES ('$id', '".$_SESSION['user']."', 1);";
+
+			$sql2 .= "INSERT INTO about (interest_name, group_id) 
 					SELECT interest_name, group_id FROM interest, groups WHERE interest_name = '$interest' AND group_id = '$id';";
 
-			$sql .= "INSERT INTO interest (interest_name) 
-				VALUES ('$interest')";
+			$sql2 .= "INSERT INTO interest (interest_name) 
+				VALUES ('$interest')";			
 
-			if(mysqli_multi_query($conn, $sql)) {
-				echo "<h2> Successfully added new group.";
-				echo "<a href='meetindex.php'> Click here to go back </a> </h2>"; 
+			$selInterest = "SELECT * FROM interest WHERE interest_name = '$interest'";
+			$checkInterest = mysqli_query($conn, $selInterest);
+			if($checkInterest && mysqli_num_rows($checkInterest) === 0)	{
+				if(mysqli_multi_query($conn, $sql)) {
+					echo "<h2> Successfully added new group.";
+					echo "<a href='meetindex.php'> Click here to go back </a> </h2>"; 
+				}
 			}
+			elseif($checkInterest && mysqli_num_rows($checkInterest) > 0) {
+				if(mysqli_multi_query($conn, $sql2)) {
+					echo "<h2> Successfully added new group.";
+					echo "<a href='meetindex.php'> Click here to go back </a> </h2>"; 
+				}
+			}
+			else
+				echo 'ERROR: '.mysqli_error($conn);			
 		}
 		mysqli_close($conn);
 	}
