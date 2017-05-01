@@ -6,7 +6,7 @@
   if(!isset($_SESSION['user'])) {
     echo "User is not signed in";
     session_unset();
-      session_destroy();
+    session_destroy();
     header("refresh:2; url=main.php");
   }
   
@@ -32,7 +32,7 @@
         padding: 0;
       }
 	  input.inp{
-	width:20%;
+	      width:20%;
 	
 }
 input.din {
