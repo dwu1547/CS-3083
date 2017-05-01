@@ -25,20 +25,23 @@
 		
 		# Check password matching
 		$selUser = "SELECT * FROM member WHERE username = '$usern'";
-		$result = mysqli_query($conn, $selUser);
-		if($result && mysqli_num_rows($result) === 1) {			
-			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);			
-			if(password_verify($passw, $row['password'])) {
-				$_SESSION['user'] = $usern;
-				header("Location: meetindex.php");
+		if($result = mysqli_query($conn, $selUser)) {
+			if($result && mysqli_num_rows($result) === 1) {			
+				$row = mysqli_fetch_array($result, MYSQLI_ASSOC);			
+				if(password_verify($passw, $row['password'])) {
+					$_SESSION['user'] = $usern;
+					header("Location: meetindex.php");
+				}
+				else {
+					$error = 'Invalid login or password';
+				}
 			}
 			else {
 				$error = 'Invalid login or password';
-			}
+			}		
 		}
-		else {
-			$error = 'Invalid login or password';
-		}		
+		else
+			echo 'ERROR: '.mysqli_error($conn);	
 	}
 ?>
 

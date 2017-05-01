@@ -98,9 +98,9 @@ if($check == True){
 	if ($conn->query($sql) === TRUE) {
 		echo "<h2> New record created successfully. ";
 		echo "<a href='meetindex.php'> Click here to go back </a> </h2>";
-	} else {
+	} 
+	else 
 		echo "Error: " . $sql . "<br>" . $conn->error;
-	}
 }
 ?>
 </body>

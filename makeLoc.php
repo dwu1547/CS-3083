@@ -1,3 +1,17 @@
+<?php
+  require('connect.php');
+  session_start();
+  
+  # Check if user is logged in or not
+  if(!isset($_SESSION['user'])) {
+    echo "User is not signed in";
+    session_unset();
+      session_destroy();
+    header("refresh:2; url=main.php");
+  }
+  
+  echo "<span style='font-size: 18px;'> Current signed in as ".$_SESSION['user']." </span>";
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -29,7 +43,8 @@ input.din {
 	<script type="text/javascript" src="jsEvents.js"></script>
   </head>
   <body>
-  <div id="floating-panel">
+    <div id="floating-panel">
+      <br>
       <input id="address" type="textbox" placeholder="Location Name,Street,City">
       <input id="submit" type="button" value="Geocode">
     </div>

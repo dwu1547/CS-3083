@@ -14,22 +14,25 @@
 	} 
 	$sql = "SELECT groups.group_id,groups.group_name,groups.description,groups.username from groups,about
 	where groups.group_id = about.group_id AND about.interest_name = $inpINT";
-	$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-// output data of each row
-echo "<table>";
-echo "<tr><td>","Group_id","</td><td>","Group_Name","</td><td>","Description","</td><td>","Creator","</td><tr>";
-	while($row =mysqli_fetch_assoc($result)){
-		echo"<tr><td>",$row['group_id'],"</td><td>".$row['group_name'],"</td><td>",$row['description'],
-		"</td><td>",$row['username'],"</td></tr>";
+	if($result = $conn->query($sql)) {
+		if ($result->num_rows > 0) {
+			// output data of each row
+			echo "<table>";
+			echo "<tr><td>","Group_id","</td><td>","Group_Name","</td><td>","Description","</td><td>","Creator","</td><tr>";
+				while($row =mysqli_fetch_assoc($result)){
+					echo"<tr><td>",$row['group_id'],"</td><td>".$row['group_name'],"</td><td>",$row['description'],
+					"</td><td>",$row['username'],"</td></tr>";
+				}
+			echo"</table>";
+		}
+		else {
+			echo "0 results";
+		}
 	}
-echo"</table>";
-}
-else {
-echo "0 results";
-}
+	else
+		echo 'ERROR: '.mysqli_error($conn);	
 $conn->close();
 ?>
-<input type="button" value="Go back to starting page" class="button_active" onclick="location.href='meetindex.php';">
+<input type="button" value="Go Back" class="button_active" onclick="location.href='interestGetGroups.php';">
 </body>
 </html>

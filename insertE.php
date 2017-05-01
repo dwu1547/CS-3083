@@ -54,25 +54,29 @@
 	from(select event_id,title,description,start_time,end_time,group_id,lname,zip from events
 	where start_time>=$ssinput)as T
 	where T.end_time<=$eeinput";
-	$result = $conn->query($sql);
-	if ($result->num_rows > 0) {
-	// output data of each row
-	echo "<div class='container-fluid' style='font-size: 18px;'>";
-		while($row =mysqli_fetch_assoc($result)){
-			echo"<div> Event ID: ".$row['event_id']."</div> 
-				<div> Event title: ".$row['title']."</div> 
-				<div> Event description: ".$row['description']."</div> 
-				<div> Start Time: ".$row['start_time']."</div> 
-				<div> End Time: ".$row['end_time']."</div>
-				<div> Group ID: ".$row['group_id']."</div> 
-				<div> Location Name: ".$row['lname']."</div> 
-				<div> Location Zipcode: ".$row['zip']."</div> <br>";
+	if($result = $conn->query($sql)) {
+		if ($result->num_rows > 0) {
+		// output data of each row
+		echo "<div class='container-fluid' style='font-size: 18px;'>";
+			while($row =mysqli_fetch_assoc($result)){
+				echo"<div> Event ID: ".$row['event_id']."</div> 
+					<div> Event title: ".$row['title']."</div> 
+					<div> Event description: ".$row['description']."</div> 
+					<div> Start Time: ".$row['start_time']."</div> 
+					<div> End Time: ".$row['end_time']."</div>
+					<div> Group ID: ".$row['group_id']."</div> 
+					<div> Location Name: ".$row['lname']."</div> 
+					<div> Location Zipcode: ".$row['zip']."</div> <br>";
+			}
+		echo"</div>";
 		}
-	echo"</div>";
+		else {
+		echo "0 results";
+		}
 	}
-	else {
-	echo "0 results";
-	}
+	else
+		echo "Error: " . $sql . "<br>" . $conn->error;
+	
 	$conn->close();
 ?>
 <div> <input type="button" value="Go Back" class="button_active" onclick="location.href='sortEvents2.php';"> </div>

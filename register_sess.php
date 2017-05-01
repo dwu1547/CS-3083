@@ -41,9 +41,12 @@
 		}
 		# Check same username in db
 		$selUser = "SELECT * FROM member WHERE username = '$usern'";
-		$userQuery = mysqli_query($conn, $selUser);
-		if($userQuery && mysqli_num_rows($userQuery) > 0) 
-			$error = 'Username taken.';		
+		if($userQuery = mysqli_query($conn, $selUser)) {
+			if($userQuery && mysqli_num_rows($userQuery) > 0) 
+				$error = 'Username taken.';		
+		}
+		else
+			echo 'ERROR: '.mysqli_error($conn);	
 		
 		# Insert into db
 		if(!isset($error) && empty($error)) {

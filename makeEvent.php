@@ -1,14 +1,16 @@
 <?php
 	require('connect.php');
 	session_start();
-
-	# Check if user is signed in or not
+	
+	# Check if user is logged in or not
 	if(!isset($_SESSION['user'])) {
 		echo "User is not signed in";
+		session_unset();
+    	session_destroy();
 		header("refresh:2; url=main.php");
 	}
-
-	echo "<span> Current signed in as ".$_SESSION['user']." </span>";
+	
+	echo "<span style='font-size: 18px;'> Current signed in as ".$_SESSION['user']." </span>";
 ?>
 
 <!DOCTYPE html>
@@ -103,38 +105,44 @@
 			<div class="_gID">
 				<?php
 					$selgID = "SELECT group_id FROM groups where username = '".$_SESSION['user']."'";
-					$qry = mysqli_query($conn, $selgID);
-					if($qry && mysqli_num_rows($qry) > 0) {
-						echo "<label for='gID'> Group ID: &nbsp</label>";
-						echo "<select name='selgroupID'>";
-						while($row = mysqli_fetch_assoc($qry)) {
-							#echo $row["group_id"].' ';
-							echo "<option value=".$row["group_id"]."> ".$row["group_id"]." </option>";
+					if($qry = mysqli_query($conn, $selgID)) {
+						if($qry && mysqli_num_rows($qry) > 0) {
+							echo "<label for='gID'> Group ID: &nbsp</label>";
+							echo "<select name='selgroupID'>";
+							while($row = mysqli_fetch_assoc($qry)) {
+								#echo $row["group_id"].' ';
+								echo "<option value=".$row["group_id"]."> ".$row["group_id"]." </option>";
+							}
+							echo "</select>";
 						}
-						echo "</select>";
+						else {
+							echo "<script> alert('You are not in a group! Please join or create a group.') </script>";
+							header("refresh: 0.1; url=makegroup.php"); 
+						}
 					}
-					else {
-						echo "<script> alert('You are not in a group! Please join or create a group.') </script>";
-						header("refresh: 0.1; url=makegroup.php"); 
-					}
+					else
+						echo 'ERROR: '.mysqli_error($conn);	
 				?>
 			</div>
 			<div class="_locaName">
 				<?php
 					$selLoc = "SELECT lname, zip FROM location";
-					$result = mysqli_query($conn, $selLoc);
-					if($result && mysqli_num_rows($result) > 0) {
-						echo "<label for='lname'> Location: &nbsp</label>";
-						echo "<select name='selLoc'>";
-						while($row = mysqli_fetch_assoc($result)) {
-							echo "<option value='".$row["lname"]."|".$row["zip"]."'> ".$row["lname"]." and ".$row["zip"]."</option>";
+					if($result = mysqli_query($conn, $selLoc)) {
+						if($result && mysqli_num_rows($result) > 0) {
+							echo "<label for='lname'> Location: &nbsp</label>";
+							echo "<select name='selLoc'>";
+							while($row = mysqli_fetch_assoc($result)) {
+								echo "<option value='".$row["lname"]."|".$row["zip"]."'> ".$row["lname"]." and ".$row["zip"]."</option>";
+							}
+							echo "</select>";
 						}
-						echo "</select>";
+						else {
+							echo "<script> alert('Locations not added yet. Please add locations.') </script>";
+							header("refresh: 0.1; url=makeLoc.php"); # placeholder for addlocation.php
+						}
 					}
-					else {
-						echo "<script> alert('Locations not added yet. Please add locations.') </script>";
-						header("refresh: 0.1; url=makeLoc.php"); # placeholder for addlocation.php
-					}
+					else
+						echo 'ERROR: '.mysqli_error($conn);	
 				?>
 			</div>
 			<div>
