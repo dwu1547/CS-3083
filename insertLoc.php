@@ -8,6 +8,8 @@ span.ch{
 </head>
 <body>
 <?php
+require('connect.php');
+
 $loc = htmlspecialchars(strip_tags(trim($_GET['Locname'])));
 echo $loc;
 echo "<br>";
@@ -88,13 +90,6 @@ $inDesc="'".$Desc."'";
 $inLat=(float)$Lat;
 $inLong=(float)$Long;
 if($check == True){
-	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "cs3083_proj";
-
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);

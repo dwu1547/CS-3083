@@ -6,13 +6,8 @@
 <div>SELECT INTEREST TO GET GROUPS</div>
 <br>
 <?php
-$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "meetup";
+	require('connect.php');
 	
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
@@ -38,5 +33,6 @@ $servername = "localhost";
 	}
 	$conn->close();
 ?>
+	<input type="button" value="Go Back" class="button_active" onclick="location.href='meetindex.php';">
 </body>
 </html>

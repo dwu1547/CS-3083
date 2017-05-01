@@ -14,7 +14,7 @@
 		$id = htmlspecialchars(strip_tags(trim($_POST['gID'])));
 		$name = htmlspecialchars(strip_tags(trim($_POST['gName'])));
 		$desc = htmlspecialchars(strip_tags(trim($_POST['desc'])));
-		$interest = htmlspecialchars(strip_tags(trim($_POST['gInterest'])));
+		$interest = ucfirst(htmlspecialchars(strip_tags(trim($_POST['gInterest']))));
 
 		$fields = array('gID', 'gName', 'desc', 'gInterest');
 
@@ -40,29 +40,25 @@
 
 		# Insert into database
 		if(!isset($error) && empty($error)) {
-			$_SESSION['creator'] = $_SESSION['user'];	# variable for creator of group
-
 			$sql = "INSERT INTO groups (group_id, group_name, description, username)
 				VALUES ('$id', '$name', '$desc', '".$_SESSION['user']."');";
 
 			$sql .= "INSERT INTO belongs_to (group_id, username, authorized)
 				VALUES ('$id', '".$_SESSION['user']."', 1);";
 
-			$sql .= "INSERT INTO about (group_id, interest_name)
-				VALUES ('$id', '$interest');";
+			$sql .= "INSERT INTO about (interest_name, group_id) 
+					SELECT interest_name, group_id FROM interest, groups WHERE interest_name = '$interest' AND group_id = '$id';";
 
 			$sql .= "INSERT INTO interest (interest_name) 
 				VALUES ('$interest')";
 
 			if(mysqli_multi_query($conn, $sql)) {
 				echo "<h2> Successfully added new group.";
-				echo "<a href='meetindex.php'> Click here to go back </a> </h2>";
+				echo "<a href='meetindex.php'> Click here to go back </a> </h2>"; 
 			}
-			else
-				echo 'ERROR: '.mysqli_error($conn);
 		}
+		mysqli_close($conn);
 	}
-	
 ?>
 
 <!DOCTYPE html>

@@ -3,16 +3,11 @@
 </head>
 <body>
 <?php
-$int = htmlspecialchars(strip_tags(trim($_GET['chooseInt'])));
-//echo $int;
-$inpINT = "'".$int."'";
-$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$dbname = "meetup";
+	require('connect.php');
+	$int = htmlspecialchars(strip_tags(trim($_GET['chooseInt'])));
+	//echo $int;
+	$inpINT = "'".$int."'";
 	
-	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
