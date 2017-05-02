@@ -62,8 +62,14 @@
 		while($row = mysqli_fetch_array($result))
 		{
 		//echo "<br>", $row['group_id'],"</br>";
-			echo "<tr><td>".$row['event_id']."</td><td>".$row['title']."</td><td>".$row['description']."</td><td>".$row['start_time'].
-			"</td><td>".$row['end_time']."</td><td>".$row['group_id']."</td><td>".$row['lname']."</td><td>".$row['zip']."</td></tr>";
+			echo "<tr><td>Event ID: ".$row['event_id']."&nbsp</td>
+					<td> Event Title: ".$row['title']."&nbsp</td>
+					<td> Description: ".$row['description']."&nbsp</td>
+					<td> Start time: ".$row['start_time']."&nbsp</td>
+					<td> End time: ".$row['end_time']."&nbsp</td>
+					<td> Group ID: ".$row['group_id']."&nbsp</td>
+					<td> Location name: ".$row['lname']."&nbsp</td>
+					<td> Location zipcode: ".$row['zip']."</td></tr>";
 		} 
 	echo "<table>";
 	
