@@ -78,6 +78,18 @@
 			}
 			else
 				echo 'ERROR: '.mysqli_error($conn);
+
+			$chkrsvp ="select username from belongs_to WHERE group_id ='".$selgroupID."'";
+			$rsvpresult = $conn->query($chkrsvp);
+			while($row =mysqli_fetch_assoc($rsvpresult)){
+				$insrsvp = "INSERT INTO attend (event_id,username,rsvp,rating) 
+				values('$eID',"."'".$row['username']."'".",0,0)";
+				if($conn->query($insrsvp)){
+					;#echo "new rsvp <br>";
+				}
+				else
+					echo "Error".$insrsvp."<br>";
+			}
 		}
 	}
 ?>

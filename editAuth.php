@@ -18,6 +18,8 @@
     	$auth = htmlspecialchars(strip_tags(trim($_POST['authorize'])));
 
       #echo "user: ".$selUser.' user: '.$user.' gID: '.$gID.' auth: '.$auth;
+      # Check field errors
+      
 
       if(!isset($error) && empty($error)) { 
         $update = "UPDATE belongs_to SET authorized = '$auth' WHERE group_id = '$gID' AND username = '$user'";

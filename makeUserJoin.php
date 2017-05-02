@@ -97,14 +97,23 @@
           <h2>Edit Member Authority</h2>
           <div class="_auth">
             <?php
-              $selUser = "SELECT username, group_id FROM belongs_to WHERE NOT username = '".$_SESSION['user']."'";
-              $selG = "SELECT group_id FROM groups WHERE username = '".$_SESSION['user']."'";
+              $selUser = "select username,group_id from belongs_to where group_id IN (select group_id from 
+                  groups where username ='".$_SESSION['user']."')";
               if($qry = mysqli_query($conn, $selUser)) {
                 if($qry && mysqli_num_rows($qry) > 0) {
                   echo "<label for='user'> All users: &nbsp</label>";
                   echo "<select name='selUser'>";
+                  $count = 0;
                   while($row = mysqli_fetch_assoc($qry)) {
-                    echo "<option value=".$row["username"]."|".$row["group_id"]."> Username: ".$row["username"]." of Group ID: ".$row["group_id"]." </option>";
+                    if($row["username"] != $_SESSION['user']) { # Show only members in group other than creator of group
+                      echo "<option value=".$row["username"]."|".$row["group_id"]."> Username: ".$row["username"]." of Group ID: ".$row["group_id"]." </option>";
+                      $count += 1;
+                    }
+                  }
+                  if($count === 0) {
+                    ?>
+                    <script type="text/javascript"> var nomem = 1; </script>
+                    <?php
                   }
                   echo "</select>";
                 }
