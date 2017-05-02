@@ -104,7 +104,7 @@
 			</div>
 			<div class="_gID">
 				<?php
-					$selgID = "SELECT group_id FROM groups where username = '".$_SESSION['user']."'";
+					$selgID = "SELECT group_id FROM belongs_to where username = '".$_SESSION['user']."'";
 					if($qry = mysqli_query($conn, $selgID)) {
 						if($qry && mysqli_num_rows($qry) > 0) {
 							echo "<label for='gID'> Group ID: &nbsp</label>";
