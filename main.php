@@ -1,4 +1,5 @@
 <?php
+	require('connect.php');
 	# Check if session existed ? reset : nothing
 	if (session_status() != PHP_SESSION_NONE) {
     	session_unset();
@@ -6,6 +7,13 @@
 	}
 	if(isset($_SESSION))
 		echo "existing session";
+
+	# change password length to match hash password length
+	$sql = "ALTER TABLE member CHANGE password password VARCHAR(60)";
+	if(!mysqli_query($conn, $sql)) {
+		echo mysqli_error($conn);
+	}
+
 ?>
 
 <!DOCTYPE html>
