@@ -121,5 +121,6 @@
 			}
 		?> 
 	</div>
+	<div> <input type="button" value="Go Back" class="button_active" onclick="location.href='meetindex.php';"> </div>
 </body>
 </html>

@@ -8,7 +8,7 @@
 		session_unset();
     	session_destroy();
 		header("refresh:2; url=main.php");
-	}
+	}	
 
 	if(isset($_POST['submit'])) {
 		$rating = $_POST['rating'];
@@ -47,8 +47,8 @@
 		<form class="rateEvent" method="POST" action="">
 			<h2> Rate attended events </h2>
 			<div class="_eventsAttend">
-				<?php
-					$sql = "SELECT event_id FROM attend WHERE username = '".$_SESSION['user']."' AND rsvp = 1 AND ";
+				<?php					
+					$sql = "SELECT event_id FROM attend WHERE username = '".$_SESSION['user']."' AND rsvp = 1";
 					if($qry = mysqli_query($conn, $sql)) {
 						if($qry && mysqli_num_rows($qry) > 0) {
 							echo "<label for='eID'> Event ID: &nbsp</label>";
@@ -59,6 +59,8 @@
 							}
 							echo "</select>";
 						}
+						else
+							echo 'You are not attending any events!';
 					}
 					else
 						echo 'ERROR: '.mysqli_error($conn);	
