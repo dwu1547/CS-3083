@@ -14,7 +14,9 @@
 		$rating = $_POST['rating'];
 		$eID = $_POST['selEventID'];
 		#echo $rating.' '.$eID;
-
+		if(!isset($eID) || empty($eID)) {
+			$error = 'You are not attending any events!';
+		}
 		$sql = "UPDATE attend SET rating = '$rating' WHERE event_id = '$eID' AND username = '".$_SESSION['user']."'";
 		if($qry = mysqli_query($conn, $sql)) {
 			echo "<script> alert('Thanks for rating the event.') </script>";
@@ -59,8 +61,9 @@
 							}
 							echo "</select>";
 						}
-						else
+						else {
 							echo 'You are not attending any events!';
+						}
 					}
 					else
 						echo 'ERROR: '.mysqli_error($conn);	

@@ -72,7 +72,7 @@
 				<form class="makeUserInterest" method="POST" action="insUserIntr.php">
 					<h2> User Interest </h2>
 					<div class="_interest">
-						<label for="interest"> Group Interest: </label>
+						<label for="interest"> User Interest: </label>
 						<input type="text" name="gInterest" id="gInterest" maxlength="20">
 					</div>
 					<div> 
