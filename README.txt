@@ -4,6 +4,10 @@ main.php is homepage you have to go through to register/login.
 make your database name into cs3083_proj, username is root and password is ""
 password uses bcrypt hashing, minimum length is VARCHAR(60) thus altering table datatype is needed.
 
+SQLqry.txt - for details of sql queries
+filedescriptions.txt - for details of all php files and who did what
+
+
 --------------------------------------------------------------------------------------------------------------------
 
 SQLs
