@@ -1,3 +1,6 @@
+by JIA SHENG FU, WAI SAN GU, DANNY WU
+jsf395, wg587, dw1547
+
 INSTRUCTIONS
 
 main.php is homepage you have to go through to register/login.
