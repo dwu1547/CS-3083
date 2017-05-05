@@ -1,3 +1,163 @@
+INSTRUCTIONS
+
+main.php is homepage you have to go through to register/login.
+make your database name into cs3083_proj, username is root and password is ""
+password uses bcrypt hashing, minimum length is VARCHAR(60) thus altering table datatype is needed.
+
+--------------------------------------------------------------------------------------------------------------------
+
+SQLs
+
+main.php -> select registration or login
+	ALTER TABLE member CHANGE password password VARCHAR(60)
+	-- need to alter database password datatype to match password_hash length which is minimum VARCHAR(60)
+
+register_sess.php -> post process of inputing registration fields
+	SELECT * FROM member WHERE username = '$usern'
+	-- checks whether username exists in table already
+
+	INSERT INTO member (username, password, firstname, lastname, zipcode) 
+				VALUES ('$usern', '$passw', '$fname', '$lname', '$zipco')
+	-- inserts input values into the database
+
+login_sess.php -> post process of inputing login fields
+	SELECT * FROM member WHERE username = '$usern'
+	-- checks whether username exists in table already
+
+insertE.php -> post process of user choosing a range of date to view all public events of those dates
+	SELECT event_id,title,description,start_time,end_time,group_id,lname,zip
+	FROM(SELECT event_id,title,description,start_time,end_time,group_id,lname,zip FROM events
+	WHERE start_time>=$ssinput)as T
+	WHERE T.end_time<=$eeinput
+	-- displays event id, title, description, start time, end time, group id, location name and zipcode where the table start time and end time is in between the input start and end time.
+
+interestGetGroups.php -> user select from dropdown of interests to get groups of that interest
+	SELECT * from interest
+	-- gets interest name from interest for a select tag
+
+interestShowGroups.php -> post process of user selecting the interest from interestGetGroups.php
+	SELECT groups.group_id,groups.group_name,groups.description,groups.username FROM groups,about
+	WHERE groups.group_id = about.group_id AND about.interest_name = $inpINT
+	-- displays group id, name, description, and username from table groups where group id is same in about and groups table AND interest name is same in the about table.
+
+makeInterest.php -> user inputs new interest to selected group id
+	SELECT group_id FROM groups where username = '".$_SESSION['user']."'
+	-- displays all group id created by the user
+
+insGroupIntr.php -> post process of user selecting group id to add interest
+	SELECT * FROM about WHERE interest_name = '$interest' AND group_id = '$gID'
+	-- checks if that group id already have that existing interest
+
+	INSERT INTO interest (interest_name) VALUES ('$interest')
+	INSERT INTO about (interest_name, group_id) 
+				SELECT interest_name, group_id FROM interest, groups WHERE interest_name = '$interest' AND group_id = '$gID'
+	-- if interest already exists in the interest table, insert user inputs into about table instead
+	-- else add onto interest table and about table
+
+insUserIntr.php -> post process of user adding their own interest into interested_in table
+	SELECT * FROM interested_in WHERE username = '$user' AND interest_name = '$interest'
+	-- checks if interest already exist inside interested_in table
+
+	INSERT INTO interest (interest_name) VALUES ('$interest')
+	INSERT INTO interested_in (username, interest_name) 
+				SELECT username, interest_name FROM member, interest WHERE username = '$user' AND interest_name = '$interest'
+	-- if interest already exists in the interest table, insert user inputs into interested_in table instead
+	-- else add onto interest table and interested_in table
+
+rateEvent.php -> user who are attending events can rate the events
+	SELECT event_id FROM attend WHERE username = '".$_SESSION['user']."' AND rsvp = 1
+	-- displays event ids of user who rsvp'd
+
+	UPDATE attend SET rating = '$rating' WHERE event_id = '$eID' AND username = '".$_SESSION['user']."'
+	-- rates the event of the event id
+
+insertGroup.php -> post process of user creating a new group
+	SELECT * FROM groups WHERE group_id = '$id'
+	-- checks if group id exists already
+
+	SELECT * FROM about WHERE group_id = '$id' AND interest_name = '$interest'
+	-- checks if group id of that interest exists already
+
+	SELECT * FROM interest WHERE interest_name = '$interest'
+	-- checks if interest already exists in interest table
+
+	INSERT INTO groups (group_id, group_name, description, username)
+				VALUES ('$id', '$name', '$desc', '".$_SESSION['user']."')
+	INSERT INTO belongs_to (group_id, username, authorized)
+				VALUES ('$id', '".$_SESSION['user']."', 1)
+	INSERT INTO interest (interest_name) 
+				VALUES ('$interest')
+	INSERT INTO about (interest_name, group_id) 
+				SELECT interest_name, group_id FROM interest, groups WHERE interest_name = '$interest' AND group_id = '$id'
+	-- if interest doesnt exist in interest table, insert group id, name, description, username into groups table; insert group id, username, authority into belongs_to table, interest_name into interest table, and insert interest_name and group id into about.
+
+makeEvent.php -> user creates new event here
+	SELECT group_id FROM belongs_to where username = '".$_SESSION['user']."'
+	-- displays all group id that the user is in
+
+	SELECT lname, zip FROM location
+	-- displays all location name and zipcodes
+
+eventProcess.php -> post process of makeEvent.php
+	SELECT * FROM events WHERE event_id = '$eID'
+	-- checks if event id already exists
+
+	SELECT * FROM belongs_to WHERE username = '".$_SESSION['user']."' AND group_id = '$selgroupID' AND authorized = 1
+	-- checks if user in the group is authorized to make a new event
+
+	INSERT INTO events (event_id, title, description, start_time, end_time, group_id, lname, zip)
+				VALUES ('$eID', '$eTitle', '$desc', '$sdateTime', '$edateTime', '$selgroupID', '$locName', '$locZip')
+	-- insert event id, title, description, start time, end time, group id, location name and zipcode into events table
+
+	SELECT username FROM belongs_to WHERE group_id ='".$selgroupID."'
+	INSERT INTO attend (event_id,username,rsvp,rating) 
+				VALUES('$eID',"."'".$row['username']."'".",0,0)
+	-- gets username that are in the group id and inserts the event id, username, rsvp, rating of the new event into attend table
+
+insertLoc.php -> post process of makeLoc.php
+	INSERT INTO Location VALUES($inLoc,$inZip,$inStreet,$inCity,$inDesc,$inLat,$inLong)
+	-- inserts location name, zipcode, street, city, description, latitude, longitude into location table
+
+makeUserJoin.php -> creator of group chooses which member to join
+	SELECT group_id FROM groups where username = '".$_SESSION['user']."'
+	-- displays creator's group id
+
+	SELECT username FROM member WHERE NOT username = '".$_SESSION['user']."'
+	-- displays all username that are NOT the creator's name
+
+	SELECT username,group_id FROM belongs_to WHERE group_id IN (SELECT group_id FROM 
+                  groups WHERE username ='".$_SESSION['user']."')
+    -- displays users who are in the creator's group
+
+insMem.php -> post process of makeUserJoin.php; inserts member into creator's group
+	SELECT * FROM belongs_to WHERE group_id = '$gID' AND username = '$user'
+	-- checks if member is already in group
+
+	INSERT INTO belongs_to (group_id, username, authorized) VALUES ('$gID', '$user', '$auth')
+	-- inserts the member into that group id with whatever authority
+
+editAuth.php -> post process of makeUserJoin.php; edits member authority
+	UPDATE belongs_to SET authorized = '$auth' WHERE group_id = '$gID' AND username = '$user'
+	-- edits member authority of the group
+
+chooseEvent.php -> post process of userChooseRange.php; displays user's group's events of the date range
+	SELECT event_id,title,description,start_time,end_time,group_id,lname,zip
+	FROM(SELECT event_id,title,description,start_time,end_time,group_id,lname,zip
+	FROM(SELECT event_id,title,description,start_time,end_time,group_id,lname,zip FROM events
+	WHERE start_time>=$ssinput)AS T
+	WHERE T.end_time<=$eeinput)AS S 
+	WHERE S.group_id IN 
+	(SELECT group_id FROM 
+	groups WHERE username ='".$_SESSION['user']."')
+	-- displays event id, title, description, start time, end time, group id, location name and zipcode. This is relative to only groups that the user has joined and whatever the date range the user input
+
+gotoEvent.php -> post process of chooseEvent.php; user selects event to attend/rsvp
+	UPDATE ATTEND SET rsvp = $ans WHERE event_id = $eve_id AND username ='".$_SESSION['user']."'
+	-- user selects whether to rsvp or not of the specific event
+
+-----------------------------------------------------------------------------
+EXPLANATION OF PHP FILES
+
 main.php = where user select registration or login
 meetindex.php = after user is logged in, this is the page where user will be clicking for creating, showing, updating members, groups, events, etc.
 connect.php = connect to database
@@ -40,3 +200,4 @@ editAuth.php = updates member authority
 
 userchooseRange.php = user chooses a range of dates to display the events by groups of user is in
 chooseEvent.php = continuation of userchooseRange.php; after displaying the event, user has the option to RSVP the event
+gotoEvent.php = user decides whether to attend the event or not
