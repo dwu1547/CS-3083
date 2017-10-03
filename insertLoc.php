@@ -69,7 +69,7 @@ else{
 	$check = True;
 }
 if(!isset($Long) || trim($Long) == '' || filter_var($Long,FILTER_VALIDATE_FLOAT) === False){
-	echo '<span class="ch">Missing Longitude or not a decimal</span> <br>';
+	echo '<span class="ch">Missing Longitude or not a Decimal</span> <br>';
 	$check = False;
 }
 else{
